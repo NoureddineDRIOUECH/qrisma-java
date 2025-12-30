@@ -1,0 +1,40 @@
+# Java/Maven
+target/
+*.jar
+*.war
+*.ear
+*.class
+.classpath
+.project
+.settings/
+*.sts4-cache/
+*.springBeans
+*.log
+
+# Frontend/Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+*.iws
+*.ipr
+
+# Sensitive files
+backend/src/main/resources/application.yml
+backend/src/main/resources/application.yml.save
+.env
+.env.local
+
+# Build artifacts
+build/
+.gradle/
