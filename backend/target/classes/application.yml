@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/qrisma_java
+    username: postgres
+    password: nourddine2004
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:dev-secret-change-me-2025}
+    expiration-ms: 3600000
+
+google:
+  wallet:
+    issuerId: ${GOOGLE_WALLET_ISSUER_ID:3388000000023004943}
+    serviceAccountJson: |
+      {"type": "service_account", "project_id": "qrisma-471619", "private_key_id": "732e9d502fde0408ba36ccab19b5d85ed0ced381", "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCaHkWOH39ZCy/f\nl63ZxHv6ZnBx6tiL13yl5de+dDsI3Pjv2d/FH2mBpD5Ams8jEF74mC/09cBCBqDN\nOc72zbl6b5GrhF0GcycL/qpyY8+GJ7xqG4iKuq1+9dPyBnTrexQHk0vG8ld33SAi\nmHe4eqwrbnt0wO/2auCspCIQJZmTw4ErUiFSWAfjRwKeTooe8g1vtMXdXoLqqITE\nlh1yvlmdXi2mqibqRJnWPTgLK7tEqbVnOT1VFmgFcrSTDtGjpyToT9USwNK4jrHy\n2BrrA+KSJhQaObZtVoqHETfnaMjELmXXf+jlkuhAnKcMmEK+zsnCRuRTjiXKUZqU\nRrEdbozPAgMBAAECggEAEqJeXpTIXQfRPgOk7ZOoOdpw9hUjIaVoWNa1gz2idavi\nHX4GZFsr8pTdQgp1yRONqBkek0uzd0g94RKAR68QIhGjV02lwcXijry39yTCTsI3\nMc0qcTupBpTKj5TgRiiXf2L74o4irUd7PzOYJiIO9yFgo/lACldZ2wXtaG5jZ04o\nFba3R9EqyTtDXLv2/iZRfD4wRM1tR34yal0y85hIeoffzT6PNwuM5p2YfbGV+mu8\nybKtNFBWREbG6LQDmm9sqxHXYwvorbsgFMnVHaElO7ziNyEG2WMeUEwMGAoD3L6x\nhJzG0XG9AtYmIuH9kLokjqAZttwXQ96Duy3CZWpg4QKBgQDQRkG+pds+WzgEtqHw\nfjCOhVgOfMg8rk77K8vv7CMK6e5zWXttbZHmmjkBa7rct+8Z7xr+csLpI9IunnSx\nwqsnhfvW9T3jTOWSzt8tmgsDcM59IQ+RqDS+igRBFC8Y7ZOjIWscvzBj3cjxh5Ua\nr0clUDyDm9Nzw4F/kUUHYbHnPQKBgQC9bx4uQTbKfOD3s78WpuqaGYpyRelM7QVZ\nP2BtVrAcVygPbSeaKYPr5Tla1FttmsJi80oW2ys48wn/1X4zklDr25d/1MdvTY6S\nSP+27cgPbs9zLUSSRvE3hlfnUKMjy6q2MtdNsYuIPoqI5xePWuEGw02xxut5ji+e\nH4SFDzFk+wKBgEe7qvEq1rRHXqfg7y2RiM/NhWKX/69GqdVAZGEiB3++ym3YJ/as\ngk/WVkPzAsz6XNOl0rpIdHEv8Tg1QyPmVGSsdOy4UrRyy68gqSVfpONuevAF7wLP\n2Dq39ncjqIUBbpQE8otYHiaHQKpPdD9Ylzx2wiDiDpYUhAmX0xqTv15RAoGBAJIx\n+WbVKYXoDm7cJ7NBqni3EWPTlJOrsJ8KDE8VweB9WwtcwF13gLpDM5pnnQ/fifl3\nrUwqZRcUajko+LawSwdbd3ZOLoQ1pLw83iy9IdLXP/6xhuQlH/AsHBcG4oCzo9Ht\nNsBdL0Q8kAnL3yDhkBz6CTIURJKRKyqrREi0SviVAoGBAJTYCpnVvATUoGSs1n7I\nqduTcYdJQxxkIHeHJGzOwNNslPMv9JuzRIMlL7AdRHGKTBU5fvS6csopnDWsU55N\n9yGV9gLqpMgPzPgpOuDU+G/3cOksNji0keAYgENvxch906a9LLESQc48KhkxkNw3\n966ZgTh2ld78lWtBGtKPFsa7\n-----END PRIVATE KEY-----\n", "client_email": "qrisma-wallet-service@qrisma-471619.iam.gserviceaccount.com", "client_id": "101518151842190380786", "auth_uri": "https://accounts.google.com/o/oauth2/auth", "token_uri": "https://oauth2.googleapis.com/token", "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs", "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/qrisma-wallet-service%40qrisma-471619.iam.gserviceaccount.com", "universe_domain": "googleapis.com"}
