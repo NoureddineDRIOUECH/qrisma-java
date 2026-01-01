@@ -6,21 +6,22 @@ export default function Layout() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = React.useState(true)
-
+  
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('userId')
     localStorage.removeItem('role')
     navigate('/login')
   }
-
+  
   const NavItem = ({ to, label, icon: Icon }: { to: string, label: string, icon: any }) => (
-    <Link
-      to={to}
-      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${pathname === to
-          ? 'bg-white/20 text-white font-semibold'
+    <Link 
+      to={to} 
+      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+        pathname === to 
+          ? 'bg-white/20 text-white font-semibold' 
           : 'text-white/70 hover:bg-white/10 hover:text-white'
-        }`}
+      }`}
     >
       <Icon size={20} />
       <span className={sidebarOpen ? '' : 'hidden'}>{label}</span>
@@ -28,9 +29,9 @@ export default function Layout() {
   )
 
   return (
-    <div className="min-h-screen bg-ink-cream text-ink-dark">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-900">
       <div className="flex">
-        <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} min-h-screen bg-gradient-to-b from-ink-blue to-ink-dark text-white shadow-2xl transition-all duration-300 sticky top-0`}>
+        <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} min-h-screen bg-gradient-to-b from-indigo-600 via-indigo-700 to-indigo-900 text-white shadow-2xl transition-all duration-300 sticky top-0`}>
           <div className="p-4 flex items-center justify-between">
             {sidebarOpen && <img src="/images/Logoqrisma.png" alt="QRisma" className="h-10 mb-2 object-contain" />}
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:bg-white/10 rounded">
@@ -49,12 +50,12 @@ export default function Layout() {
         </aside>
 
         <main className="flex-1 flex flex-col">
-          <header className="h-16 bg-white/90 backdrop-blur-md border-b border-ink-gray shadow-sm flex items-center justify-between px-6 sticky top-0 z-40">
-            <div className="font-semibold text-lg text-ink-dark">Owner Console</div>
+          <header className="h-16 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm flex items-center justify-between px-6 sticky top-0 z-40">
+            <div className="font-semibold text-lg text-slate-900">Owner Console</div>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-ink-dark/60">{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
-              <button onClick={handleLogout} className="p-2 hover:bg-ink-gray/30 rounded-lg transition-colors" title="Logout">
-                <LogOut size={18} className="text-ink-dark" />
+              <span className="text-sm text-slate-500">{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
+              <button onClick={handleLogout} className="p-2 hover:bg-slate-100 rounded-lg transition-colors" title="Logout">
+                <LogOut size={18} className="text-slate-600" />
               </button>
             </div>
           </header>

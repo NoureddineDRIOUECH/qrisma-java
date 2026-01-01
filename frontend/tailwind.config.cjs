@@ -6,13 +6,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Ink Wash Palette
-        'ink-dark': '#4A4A4A',
-        'ink-gray': '#CBCBCB',
-        'ink-cream': '#FFFFE3',
-        'ink-blue': '#6D8196',
-        primary: "#6D8196",
-        secondary: "#4A4A4A",
+        primary: "#6366f1",
+        secondary: "#8b5cf6",
       },
       fontFamily: {
         sans: ["Raleway", ...defaultTheme.fontFamily.sans],
