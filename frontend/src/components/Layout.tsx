@@ -33,7 +33,7 @@ export default function Layout() {
       <div className="flex">
         <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} min-h-screen bg-gradient-to-b from-indigo-600 via-indigo-700 to-indigo-900 text-white shadow-2xl transition-all duration-300 sticky top-0`}>
           <div className="p-4 flex items-center justify-between">
-            {sidebarOpen && <div className="text-xl font-bold bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent">QRisma</div>}
+            {sidebarOpen && <img src="/images/Logoqrisma.png" alt="QRisma" className="h-10 mb-2 object-contain" />}
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:bg-white/10 rounded">
               <Menu size={20} />
             </button>

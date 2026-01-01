@@ -10,7 +10,7 @@ module.exports = {
         secondary: "#8b5cf6",
       },
       fontFamily: {
-        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+        sans: ["Raleway", ...defaultTheme.fontFamily.sans],
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-in",

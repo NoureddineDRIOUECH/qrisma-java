@@ -25,7 +25,7 @@ export default function RegisterPage() {
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault()
-    
+
     if (step === 1) {
       // Validate passwords
       if (form.password !== form.confirmPassword) {
@@ -111,12 +111,8 @@ export default function RegisterPage() {
         <div className="hidden lg:block text-white space-y-8">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-400 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl">
-                <Award size={32} className="text-white" />
-              </div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-white via-purple-200 to-indigo-200 bg-clip-text text-transparent">
-                QRisma
-              </h1>
+              {/* Icon removed */}
+              <img src="/images/Logoqrisma.png" alt="QRisma" className="h-16 w-auto object-contain" />
             </div>
             <p className="text-2xl font-semibold text-purple-100">Start Building Loyalty Today</p>
           </div>
@@ -148,9 +144,7 @@ export default function RegisterPage() {
         <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 space-y-8 border border-white/20">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              QRisma
-            </h1>
+            <img src="/images/Logoqrisma.png" alt="QRisma" className="h-12 w-auto mx-auto object-contain" />
           </div>
 
           <div>
