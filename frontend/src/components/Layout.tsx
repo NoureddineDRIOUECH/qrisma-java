@@ -29,7 +29,7 @@ export default function Layout() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 text-slate-900">
       <div className="flex">
         <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} min-h-screen bg-gradient-to-b from-indigo-600 via-indigo-700 to-indigo-900 text-white shadow-2xl transition-all duration-300 sticky top-0`}>
           <div className="p-4 flex items-center justify-between">

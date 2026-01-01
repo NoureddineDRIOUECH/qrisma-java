@@ -10,15 +10,20 @@ export default function DashboardPage() {
 
   const StatCard = ({ title, value, icon: Icon, color, delay }: any) => (
     <div 
-      className={`animate-slide-up card hover:scale-105 transition-transform border-l-4 ${color}`}
+      className={`animate-slide-up rounded-2xl shadow-lg border-2 transition-all duration-300 hover:shadow-xl hover:scale-105 overflow-hidden group ${color}`}
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-slate-600">{title}</p>
-          <p className="text-3xl font-bold text-slate-900 mt-2">{value}</p>
+      <div className="p-6 flex flex-col h-full">
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">{title}</p>
+          <div className={`p-2 rounded-xl transition-all duration-300 group-hover:scale-110`}>
+            <Icon className="text-slate-700" size={24} />
+          </div>
         </div>
-        <Icon className={`text-white p-3 rounded-lg ${color.replace('border', 'bg')}`} size={48} />
+        <div className="flex-1 flex flex-col justify-end">
+          <p className="text-4xl font-bold text-slate-900 mb-1">{value}</p>
+          <div className="h-1 w-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+        </div>
       </div>
     </div>
   )
@@ -26,8 +31,8 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-        <p className="text-slate-300">Welcome back! Here's your loyalty program overview.</p>
+        <h1 className="text-4xl font-bold text-slate-900 mb-2">Dashboard</h1>
+        <p className="text-slate-600">Welcome back! Here's your loyalty program overview.</p>
       </div>
 
       {stats ? (
@@ -36,35 +41,35 @@ export default function DashboardPage() {
             title="Total Customers" 
             value={stats.customers} 
             icon={Users}
-            color="border-indigo-500 bg-indigo-50"
+            color="border-indigo-200 bg-gradient-to-br from-indigo-50 to-indigo-100"
             delay={0}
           />
           <StatCard 
             title="Employees" 
             value={stats.employees} 
             icon={Store}
-            color="border-pink-500 bg-pink-50"
+            color="border-pink-200 bg-gradient-to-br from-pink-50 to-pink-100"
             delay={100}
           />
           <StatCard 
             title="Programs" 
             value={stats.programs} 
             icon={TrendingUp}
-            color="border-emerald-500 bg-emerald-50"
+            color="border-emerald-200 bg-gradient-to-br from-emerald-50 to-emerald-100"
             delay={200}
           />
           <StatCard 
             title="Transactions" 
             value={stats.transactions} 
             icon={Wallet}
-            color="border-orange-500 bg-orange-50"
+            color="border-orange-200 bg-gradient-to-br from-orange-50 to-orange-100"
             delay={300}
           />
           <StatCard 
             title="Total Points" 
             value={stats.totalPoints?.toLocaleString()} 
             icon={Gift}
-            color="border-blue-500 bg-blue-50"
+            color="border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100"
             delay={400}
           />
         </div>

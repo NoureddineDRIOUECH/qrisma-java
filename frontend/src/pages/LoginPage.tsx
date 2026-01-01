@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { Mail, Lock, LogIn, Rocket, Wallet, Award } from 'lucide-react'
+import { Mail, Lock, LogIn, Rocket, Wallet, Award, Eye, EyeOff, CheckCircle, X } from 'lucide-react'
 
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 
@@ -9,11 +9,63 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [focusedField, setFocusedField] = useState<string | null>(null)
+  
+  // Validation states
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+
+  // Email validation
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!email) {
+      setEmailError('Email is required')
+      return false
+    } else if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email address')
+      return false
+    }
+    setEmailError('')
+    return true
+  }
+
+  // Password validation
+  const validatePassword = (password: string) => {
+    if (!password) {
+      setPasswordError('Password is required')
+      return false
+    }
+    setPasswordError('')
+    return true
+  }
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setForm({ ...form, email: value })
+    if (value) validateEmail(value)
+  }
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setForm({ ...form, password: value })
+    if (value) validatePassword(value)
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
+    
+    // Validate before submit
+    const emailValid = validateEmail(form.email)
+    const passwordValid = validatePassword(form.password)
+    
+    if (!emailValid || !passwordValid) return
+
     setLoading(true)
     setError('')
+    setSuccess('')
+    
     try {
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
@@ -26,12 +78,22 @@ export default function LoginPage() {
         localStorage.setItem('token', data.token || 'auth-token')
         localStorage.setItem('userId', data.userId)
         localStorage.setItem('role', data.role)
-        navigate('/owner/dashboard')
+        setSuccess('Login successful! Redirecting...')
+        setTimeout(() => navigate('/owner/dashboard'), 1500)
       } else {
-        setError(data.error || 'Login failed')
+        // Better error messages
+        if (data.error === 'User not found') {
+          setError('No account found with this email address')
+        } else if (data.error === 'Invalid password') {
+          setError('Incorrect password. Please try again')
+        } else if (data.error === 'Invalid credentials') {
+          setError('Invalid email or password')
+        } else {
+          setError(data.error || 'Login failed. Please try again')
+        }
       }
     } catch (e) {
-      setError('Connection error')
+      setError('Connection error. Please check your internet and try again')
     }
     setLoading(false)
   }
@@ -87,8 +149,16 @@ export default function LoginPage() {
             <p className="text-slate-600">Sign in to your account to continue</p>
           </div>
 
+          {/* Success Toast */}
+          {success && (
+            <div className="p-4 bg-emerald-50 border-2 border-emerald-200 text-emerald-700 rounded-xl text-sm font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top">
+              <CheckCircle size={18} />
+              {success}
+            </div>
+          )}
+
           {/* Form */}
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-4">
             {/* Email */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
@@ -96,34 +166,69 @@ export default function LoginPage() {
                 <Mail size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" />
                 <input
                   type="email"
-                  required
                   value={form.email}
-                  onChange={e => setForm({ ...form, email: e.target.value })}
+                  onChange={handleEmailChange}
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                  disabled={loading}
                   placeholder="hello@yourstore.com"
-                  className="w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 transition-colors bg-white"
+                  className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-white disabled:bg-slate-100 disabled:cursor-not-allowed ${
+                    emailError 
+                      ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                      : focusedField === 'email'
+                      ? 'border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                      : 'border-slate-200 focus:border-indigo-500'
+                  }`}
                 />
               </div>
+              {emailError && (
+                <p className="text-red-600 text-xs font-medium mt-2 flex items-center gap-1">
+                  <X size={14} /> {emailError}
+                </p>
+              )}
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+              <label className="text-sm font-semibold text-slate-700 mb-2 block">Password</label>
               <div className="relative">
                 <Lock size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" />
                 <input
-                  type="password"
-                  required
+                  type={showPassword ? 'text' : 'password'}
                   value={form.password}
-                  onChange={e => setForm({ ...form, password: e.target.value })}
+                  onChange={handlePasswordChange}
+                  onFocus={() => setFocusedField('password')}
+                  onBlur={() => setFocusedField(null)}
+                  disabled={loading}
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 transition-colors bg-white"
+                  className={`w-full pl-12 pr-12 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-white disabled:bg-slate-100 disabled:cursor-not-allowed ${
+                    passwordError 
+                      ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                      : focusedField === 'password'
+                      ? 'border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                      : 'border-slate-200 focus:border-indigo-500'
+                  }`}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
+              {passwordError && (
+                <p className="text-red-600 text-xs font-medium mt-2 flex items-center gap-1">
+                  <X size={14} /> {passwordError}
+                </p>
+              )}
             </div>
 
             {/* Error */}
             {error && (
-              <div className="p-4 bg-red-50 border-2 border-red-200 text-red-700 rounded-xl text-sm font-medium">
+              <div className="p-4 bg-red-50 border-2 border-red-200 text-red-700 rounded-xl text-sm font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top">
+                <X size={18} />
                 {error}
               </div>
             )}
@@ -131,8 +236,8 @@ export default function LoginPage() {
             {/* Submit */}
             <button
               type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-3.5 rounded-xl font-semibold hover:shadow-2xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || !!emailError || !!passwordError}
+              className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-3.5 rounded-xl font-semibold hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {loading ? (
                 <>
