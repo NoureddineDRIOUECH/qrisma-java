@@ -112,7 +112,7 @@ export default function RegisterPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               {/* Icon removed */}
-              <img src="/images/Logoqrisma.png" alt="QRisma" className="h-16 w-auto object-contain" />
+              <img src="/images/logoqr.png" alt="QRisma" className="h-16 w-auto object-contain" />
             </div>
             <p className="text-2xl font-semibold text-purple-100">Start Building Loyalty Today</p>
           </div>
@@ -144,7 +144,7 @@ export default function RegisterPage() {
         <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 space-y-8 border border-white/20">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center">
-            <img src="/images/Logoqrisma.png" alt="QRisma" className="h-12 w-auto mx-auto object-contain" />
+            <img src="/images/logoqr.png" alt="QRisma" className="h-12 w-auto mx-auto object-contain" />
           </div>
 
           <div>

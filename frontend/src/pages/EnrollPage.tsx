@@ -62,7 +62,7 @@ export default function EnrollPage() {
           <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 space-y-6 border border-white/20 animate-slide-up">
             {/* Header */}
             <div className="text-center space-y-3">
-              <img src="/images/Logoqrisma.png" alt="QRisma" className="h-20 w-auto mx-auto object-contain mb-4" />
+              <img src="/images/logoqr.png" alt="QRisma" className="h-20 w-auto mx-auto object-contain mb-4" />
               <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 Join Our Rewards
               </h1>

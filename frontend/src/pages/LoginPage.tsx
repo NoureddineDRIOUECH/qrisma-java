@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { Mail, Lock, LogIn, Sparkles, Zap, Award } from 'lucide-react'
+import { Mail, Lock, LogIn, Rocket, Wallet, Award } from 'lucide-react'
 
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 
@@ -50,8 +50,7 @@ export default function LoginPage() {
         <div className="hidden lg:block text-white space-y-8">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              {/* Icon removed */}
-              <img src="/images/Logoqrisma.png" alt="QRisma" className="h-16 w-auto object-contain" />
+              <img src="/images/logoqr.png" alt="QRisma" className="h-22 w-auto object-contain -ml-20" />
             </div>
             <p className="text-2xl font-semibold text-purple-100">Loyalty Programs, Simplified</p>
             <p className="text-lg text-purple-200/80">Build customer loyalty with beautiful digital cards powered by Google Wallet</p>
@@ -59,9 +58,7 @@ export default function LoginPage() {
 
           <div className="space-y-4">
             <div className="flex items-start gap-4 p-4 bg-white/10 backdrop-blur-lg rounded-xl border border-white/20">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Sparkles size={20} className="text-white" />
-              </div>
+              <Rocket size={24} className="text-white flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-lg text-white">Easy Setup</h3>
                 <p className="text-purple-200/70">Create loyalty programs in minutes with our intuitive interface</p>
@@ -69,9 +66,7 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-start gap-4 p-4 bg-white/10 backdrop-blur-lg rounded-xl border border-white/20">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Zap size={20} className="text-white" />
-              </div>
+              <Wallet size={24} className="text-white flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-lg text-white">Google Wallet</h3>
                 <p className="text-purple-200/70">Customers add cards directly to their mobile wallets</p>
@@ -84,7 +79,7 @@ export default function LoginPage() {
         <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 space-y-8 border border-white/20">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center">
-            <img src="/images/Logoqrisma.png" alt="QRisma" className="h-12 w-auto mx-auto object-contain" />
+            <img src="/images/logoqr.png" alt="QRisma" className="h-12 w-auto mx-auto object-contain" />
           </div>
 
           <div>

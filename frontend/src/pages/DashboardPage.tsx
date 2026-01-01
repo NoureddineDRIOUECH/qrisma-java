@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Users, Briefcase, TrendingUp, CreditCard, Gift } from 'lucide-react'
+import { Users, Store, TrendingUp, Wallet, Gift } from 'lucide-react'
 import { apiGet } from '../utils/api'
 
 export default function DashboardPage() {
@@ -42,7 +42,7 @@ export default function DashboardPage() {
           <StatCard 
             title="Employees" 
             value={stats.employees} 
-            icon={Briefcase}
+            icon={Store}
             color="border-pink-500 bg-pink-50"
             delay={100}
           />
@@ -56,7 +56,7 @@ export default function DashboardPage() {
           <StatCard 
             title="Transactions" 
             value={stats.transactions} 
-            icon={CreditCard}
+            icon={Wallet}
             color="border-orange-500 bg-orange-50"
             delay={300}
           />

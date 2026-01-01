@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, Settings, UserCircle, BarChart3, LogOut, Menu, Ticket } from 'lucide-react'
+import { LayoutDashboard, Users, Settings, UserCircle, BarChart2, LogOut, Menu, Ticket } from 'lucide-react'
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -33,7 +33,7 @@ export default function Layout() {
       <div className="flex">
         <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} min-h-screen bg-gradient-to-b from-indigo-600 via-indigo-700 to-indigo-900 text-white shadow-2xl transition-all duration-300 sticky top-0`}>
           <div className="p-4 flex items-center justify-between">
-            {sidebarOpen && <img src="/images/Logoqrisma.png" alt="QRisma" className="h-10 mb-2 object-contain" />}
+            {sidebarOpen && <img src="/images/logoqr.png" alt="QRisma" className="h-10 mb-2 object-contain" />}
             <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:bg-white/10 rounded">
               <Menu size={20} />
             </button>
@@ -45,7 +45,7 @@ export default function Layout() {
             <NavItem to="/owner/store" label="Store" icon={Settings} />
             <NavItem to="/owner/profile" label="Profile" icon={UserCircle} />
             <div className="border-t border-white/10 pt-2 mt-4" />
-            <NavItem to="/employee" label="POS" icon={BarChart3} />
+            <NavItem to="/employee" label="POS" icon={BarChart2} />
           </nav>
         </aside>
 

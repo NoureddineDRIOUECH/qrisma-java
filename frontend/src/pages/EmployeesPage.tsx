@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Trash2, Edit2, Check, X, Plus } from 'lucide-react'
+import { Trash, Pencil, Check, X, Plus } from 'lucide-react'
 
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 
@@ -141,14 +141,14 @@ export default function EmployeesPage() {
                         onClick={()=>setEditing(emp)} 
                         className="p-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
                       >
-                        <Edit2 size={18} />
+                        <Pencil size={18} />
                       </button>
                       <button 
                         onClick={()=>remove(emp.id)} 
                         disabled={loading}
                         className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
                       >
-                        <Trash2 size={18} />
+                        <Trash size={18} />
                       </button>
                     </>
                   )}
