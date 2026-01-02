@@ -58,7 +58,7 @@ export default function EmployeesPage() {
 
       <form onSubmit={create} className={`card ${
         darkMode
-          ? 'border-purple-700/50 bg-gradient-to-r from-slate-800 to-slate-800 via-purple-900/20'
+          ? 'border-purple-700/50 bg-slate-900/30'
           : 'bg-gradient-to-r from-indigo-50 to-purple-50'
       }`}>
         <h2 className={`text-lg font-semibold mb-4 ${
@@ -119,7 +119,7 @@ export default function EmployeesPage() {
       {items.length === 0 ? (
         <div className={`card text-center py-12 ${
           darkMode
-            ? 'border-purple-700/50 bg-gradient-to-br from-slate-800 via-purple-900/30 to-slate-800'
+            ? 'border-purple-700/50 bg-slate-900/30'
             : 'bg-white'
         }`}>
           <p className={`text-lg ${

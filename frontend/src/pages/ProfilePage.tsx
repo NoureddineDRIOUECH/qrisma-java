@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { User, Lock, Phone, Mail, Check } from 'lucide-react'
+import { useDarkMode } from '../context/DarkModeContext'
 
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 
 function PasswordUpdateForm() {
+  const { darkMode } = useDarkMode()
   const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
   const [passwordLoading, setPasswordLoading] = useState(false)
   const [passwordMessage, setPasswordMessage] = useState('')
@@ -49,43 +51,59 @@ function PasswordUpdateForm() {
   return (
     <form onSubmit={updatePassword} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">Current Password</label>
+        <label className={`block text-sm font-medium mb-2 ${
+          darkMode ? 'text-slate-300' : 'text-slate-700'
+        }`}>Current Password</label>
         <input
           type="password"
           required
           value={passwordForm.currentPassword}
           onChange={e => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-          className="input-field w-full"
+          className={`input-field w-full ${
+            darkMode ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400' : ''
+          }`}
           placeholder="••••••••"
         />
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">New Password</label>
+        <label className={`block text-sm font-medium mb-2 ${
+          darkMode ? 'text-slate-300' : 'text-slate-700'
+        }`}>New Password</label>
         <input
           type="password"
           required
           value={passwordForm.newPassword}
           onChange={e => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-          className="input-field w-full"
+          className={`input-field w-full ${
+            darkMode ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400' : ''
+          }`}
           placeholder="••••••••"
         />
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">Confirm New Password</label>
+        <label className={`block text-sm font-medium mb-2 ${
+          darkMode ? 'text-slate-300' : 'text-slate-700'
+        }`}>Confirm New Password</label>
         <input
           type="password"
           required
           value={passwordForm.confirmPassword}
           onChange={e => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-          className="input-field w-full"
+          className={`input-field w-full ${
+            darkMode ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400' : ''
+          }`}
           placeholder="••••••••"
         />
       </div>
 
       {passwordMessage && (
-        <div className={`p-3 rounded-lg flex items-center gap-2 ${passwordMessage.includes('✓') ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
+        <div className={`p-3 rounded-lg flex items-center gap-2 ${
+          passwordMessage.includes('✓') 
+            ? darkMode ? 'bg-emerald-900/50 text-emerald-300 border border-emerald-700' : 'bg-emerald-100 text-emerald-800' 
+            : darkMode ? 'bg-red-900/50 text-red-300 border border-red-700' : 'bg-red-100 text-red-800'
+        }`}>
           {passwordMessage.includes('✓') && <Check size={18} />}
           {passwordMessage}
         </div>
@@ -103,6 +121,7 @@ function PasswordUpdateForm() {
 }
 
 export default function ProfilePage() {
+  const { darkMode } = useDarkMode()
   const [form, setForm] = useState<any>({ email:'', firstName:'', lastName:'', phone:'' })
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -134,67 +153,93 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
-        <p className="text-slate-300">Manage your owner profile and preferences</p>
+        <h1 className={`text-3xl font-bold mb-2 ${
+          darkMode ? 'text-white' : 'text-slate-900'
+        }`}>Account Settings</h1>
+        <p className={darkMode ? 'text-slate-300' : 'text-slate-600'}>Manage your owner profile and preferences</p>
       </div>
 
       <form onSubmit={save} className="max-w-2xl space-y-6">
-        <div className="card">
-          <h2 className="text-xl font-semibold mb-6 flex items-center gap-2 text-slate-900">
-            <User size={24} className="text-indigo-600" />
+        <div className={`card ${
+          darkMode ? 'border-purple-700/50 bg-slate-900/30' : ''
+        }`}>
+          <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${
+            darkMode ? 'text-white' : 'text-slate-900'
+          }`}>
+            <User size={24} className={darkMode ? 'text-purple-400' : 'text-indigo-600'} />
             Personal Information
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
+              <label className={`block text-sm font-medium mb-2 ${
+                darkMode ? 'text-slate-300' : 'text-slate-700'
+              }`}>Email</label>
               <div className="flex items-center gap-2">
-                <Mail size={18} className="text-slate-400" />
+                <Mail size={18} className={darkMode ? 'text-slate-400' : 'text-slate-400'} />
                 <input 
                   placeholder="your@email.com" 
                   value={form.email||''} 
                   onChange={e=>setForm({...form,email:e.target.value})} 
-                  className="input-field flex-1"
+                  className={`input-field flex-1 ${
+                    darkMode ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400' : ''
+                  }`}
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Phone</label>
+              <label className={`block text-sm font-medium mb-2 ${
+                darkMode ? 'text-slate-300' : 'text-slate-700'
+              }`}>Phone</label>
               <div className="flex items-center gap-2">
-                <Phone size={18} className="text-slate-400" />
+                <Phone size={18} className={darkMode ? 'text-slate-400' : 'text-slate-400'} />
                 <input 
                   placeholder="+1 (555) 000-0000" 
                   value={form.phone||''} 
                   onChange={e=>setForm({...form,phone:e.target.value})} 
-                  className="input-field flex-1"
+                  className={`input-field flex-1 ${
+                    darkMode ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400' : ''
+                  }`}
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">First Name</label>
+              <label className={`block text-sm font-medium mb-2 ${
+                darkMode ? 'text-slate-300' : 'text-slate-700'
+              }`}>First Name</label>
               <input 
                 placeholder="John" 
                 value={form.firstName||''} 
                 onChange={e=>setForm({...form,firstName:e.target.value})} 
-                className="input-field"
+                className={`input-field ${
+                  darkMode ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400' : ''
+                }`}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Last Name</label>
+              <label className={`block text-sm font-medium mb-2 ${
+                darkMode ? 'text-slate-300' : 'text-slate-700'
+              }`}>Last Name</label>
               <input 
                 placeholder="Doe" 
                 value={form.lastName||''} 
                 onChange={e=>setForm({...form,lastName:e.target.value})} 
-                className="input-field"
+                className={`input-field ${
+                  darkMode ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400' : ''
+                }`}
               />
             </div>
           </div>
 
           {message && (
-            <div className={`mt-4 p-3 rounded-lg flex items-center gap-2 ${message.includes('✓') ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
+            <div className={`mt-4 p-3 rounded-lg flex items-center gap-2 ${
+              message.includes('✓') 
+                ? darkMode ? 'bg-emerald-900/50 text-emerald-300 border border-emerald-700' : 'bg-emerald-100 text-emerald-800' 
+                : darkMode ? 'bg-red-900/50 text-red-300 border border-red-700' : 'bg-red-100 text-red-800'
+            }`}>
               {message.includes('✓') && <Check size={18} />}
               {message}
             </div>
@@ -209,9 +254,13 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        <div className="card">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-slate-900">
-            <Lock size={20} className="text-orange-600" />
+        <div className={`card ${
+          darkMode ? 'border-purple-700/50 bg-slate-900/30' : ''
+        }`}>
+          <h2 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
+            darkMode ? 'text-white' : 'text-slate-900'
+          }`}>
+            <Lock size={20} className={darkMode ? 'text-orange-400' : 'text-orange-600'} />
             Change Password
           </h2>
           <PasswordUpdateForm />

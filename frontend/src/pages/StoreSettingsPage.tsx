@@ -81,7 +81,7 @@ export default function StoreSettingsPage() {
 
       <form onSubmit={saveSettings} className={`card space-y-6 border ${
         darkMode
-          ? 'border-purple-700/50 bg-gradient-to-br from-slate-800 via-purple-900/30 to-slate-800'
+          ? 'border-purple-700/50 bg-slate-900/30'
           : 'bg-white'
       }`}>
         {/* Store Name */}

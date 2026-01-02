@@ -96,14 +96,14 @@ export default function Layout() {
           <header className={`h-16 backdrop-blur-md border-b transition-all duration-300 flex items-center justify-between px-6 sticky top-0 z-40 ${
             darkMode
               ? 'bg-slate-900/50 border-purple-800/30'
-              : 'bg-white/80 border-slate-200'
+              : 'bg-gradient-to-r from-indigo-600 to-indigo-700 border-indigo-800'
           }`}>
             <div className={`font-semibold text-lg transition-colors duration-300 ${
-              darkMode ? 'text-white' : 'text-slate-900'
+              darkMode ? 'text-white' : 'text-white'
             }`}>Owner Console</div>
             <div className="flex items-center gap-4">
               <span className={`text-sm transition-colors duration-300 ${
-                darkMode ? 'text-slate-400' : 'text-slate-500'
+                darkMode ? 'text-slate-400' : 'text-indigo-100'
               }`}>{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
               
               {/* Dark Mode Toggle */}
@@ -112,7 +112,7 @@ export default function Layout() {
                 className={`p-2 rounded-lg transition-all ripple ${
                   darkMode
                     ? 'bg-gradient-to-br from-purple-700 to-purple-800 hover:from-purple-600 hover:to-purple-700 text-yellow-300 shadow-lg'
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                    : 'bg-gradient-to-br from-indigo-800 to-indigo-900 hover:from-indigo-700 hover:to-indigo-800 text-yellow-300 shadow-lg'
                 }`}
                 title="Toggle dark mode"
               >
@@ -126,7 +126,7 @@ export default function Layout() {
                   className={`p-2 rounded-lg transition-all ripple flex items-center gap-2 ${
                     darkMode
                       ? 'bg-gradient-to-br from-purple-700 to-purple-800 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg'
-                      : 'bg-slate-100 hover:bg-slate-200 text-slate-900'
+                      : 'bg-gradient-to-br from-indigo-800 to-indigo-900 hover:from-indigo-700 hover:to-indigo-800 text-white shadow-lg'
                   }`}
                 >
                   <UserCircle size={18} />
