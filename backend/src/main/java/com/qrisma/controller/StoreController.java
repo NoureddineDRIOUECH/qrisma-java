@@ -38,6 +38,14 @@ public class StoreController {
         try {
             // Always use ID 1 for the main store settings
             settings.setId(1L);
+
+            // Prepend https:// if website is present and doesn't have a protocol
+            String website = settings.getWebsite();
+            if (website != null && !website.trim().isEmpty() && !website.toLowerCase().startsWith("http://")
+                    && !website.toLowerCase().startsWith("https://")) {
+                settings.setWebsite("https://" + website);
+            }
+
             StoreSettings saved = settingsRepo.save(settings);
             return ResponseEntity.ok(saved);
         } catch (Exception e) {

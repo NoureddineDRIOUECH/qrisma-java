@@ -29,6 +29,7 @@ public class AuthController {
         u.setPasswordHash(passwordEncoder.encode(password));
         u.setRole("OWNER");
         u.setFirstName(body.getOrDefault("firstName", ""));
+        u.setLastName(body.getOrDefault("lastName", ""));
         userRepository.save(u);
         return ResponseEntity.ok(Map.of("message", "owner created"));
     }

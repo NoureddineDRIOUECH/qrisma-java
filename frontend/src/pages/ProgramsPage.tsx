@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Plus, Trash2, Edit2, Check, X, Copy, Download, QrCode, ChevronDown } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import { apiGet, apiPost, apiDelete } from '../utils/api'
+import { useDarkMode } from '../context/DarkModeContext'
 
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 
@@ -10,6 +11,7 @@ type Template = { design?: { logoUrl: string, backgroundUrl: string, backgroundC
 type DialogMode = null | 'add' | 'edit'
 
 export default function ProgramsPage() {
+  const { darkMode } = useDarkMode()
   const [programs, setPrograms] = useState<Program[]>([])
   const [form, setForm] = useState({ name: '', description: '', pointsPerAction: 1, active: true })
   const [editing, setEditing] = useState<Program | null>(null)
@@ -163,8 +165,10 @@ export default function ProgramsPage() {
     <div className="space-y-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Loyalty Programs</h1>
-          <p className="text-slate-300">Create and manage your loyalty card programs</p>
+          <h1 className={`text-3xl font-bold mb-2 ${
+            darkMode ? 'text-white' : 'text-slate-900'
+          }`}>Loyalty Programs</h1>
+          <p className={darkMode ? 'text-slate-300' : 'text-slate-600'}>Create and manage your loyalty card programs</p>
         </div>
         <button
           onClick={openAddDialog}
@@ -173,6 +177,7 @@ export default function ProgramsPage() {
           <Plus size={20} /> New Program
         </button>
       </div>
+      
 
       {message && (
         <div className={`p-4 rounded-lg text-sm font-medium ${message.includes('✓') ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
@@ -182,26 +187,42 @@ export default function ProgramsPage() {
 
       {/* Programs List */}
       {programs.length === 0 ? (
-        <div className="card text-center py-12">
-          <p className="text-slate-500 text-lg">No programs yet. Click "New Program" to create one!</p>
+        <div className={`card text-center py-12 border-2 rounded-2xl shadow-lg ${
+          darkMode
+            ? 'border-purple-700/50 bg-slate-900/30'
+            : 'border-slate-100 bg-slate-50'
+        }`}>
+          <p className={`text-lg ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>No programs yet. Click "New Program" to create one!</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {programs.map((prog, idx) => (
             <div
               key={prog.id}
-              className="card hover:shadow-xl transition-all animate-slide-up flex flex-col"
+              className={`card hover:shadow-xl transition-all animate-slide-up flex flex-col border-2 ${
+                darkMode
+                  ? 'border-purple-700/50 bg-slate-900/30'
+                  : 'border-slate-100 bg-slate-50'
+              }`}
               style={{ animationDelay: `${idx * 50}ms` }}
             >
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-slate-900">{prog.name}</h3>
-                  <p className="text-sm text-slate-600 mt-1 line-clamp-2">{prog.description}</p>
+                  <h3 className={`text-lg font-semibold ${
+                    darkMode ? 'text-white' : 'text-slate-900'
+                  }`}>{prog.name}</h3>
+                  <p className={`text-sm mt-1 line-clamp-2 ${
+                    darkMode ? 'text-slate-400' : 'text-slate-600'
+                  }`}>{prog.description}</p>
                   <div className="flex items-center gap-4 mt-2">
-                    <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded">
+                    <span className={`text-xs px-2 py-1 rounded ${
+                      darkMode
+                        ? 'bg-purple-900/50 text-purple-200'
+                        : 'bg-indigo-100 text-indigo-800'
+                    }`}>
                       {prog.pointsPerAction} pt/action
                     </span>
-                    <span className={`text-xs px-2 py-1 rounded ${prog.active ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'}`}>
+                    <span className={`text-xs px-2 py-1 rounded ${prog.active ? (darkMode ? 'bg-emerald-900/50 text-emerald-200' : 'bg-emerald-100 text-emerald-800') : (darkMode ? 'bg-slate-700 text-slate-300' : 'bg-slate-200 text-slate-600')}`}>
                       {prog.active ? 'Active' : 'Inactive'}
                     </span>
                   </div>
@@ -210,7 +231,11 @@ export default function ProgramsPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => openEditDialog(prog)}
-                    className="p-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+                    className={`p-2 rounded-lg transition-colors ${
+                      darkMode
+                        ? 'bg-purple-600 text-white hover:bg-purple-700'
+                        : 'bg-indigo-500 text-white hover:bg-indigo-600'
+                    }`}
                     title="Edit Program"
                   >
                     <Edit2 size={18} />
@@ -218,7 +243,11 @@ export default function ProgramsPage() {
                   <button
                     onClick={() => remove(prog.id)}
                     disabled={loading}
-                    className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                    className={`p-2 rounded-lg transition-colors ${
+                      darkMode
+                        ? 'bg-red-600/80 text-white hover:bg-red-700'
+                        : 'bg-red-500 text-white hover:bg-red-600'
+                    }`}
                     title="Delete Program"
                   >
                     <Trash2 size={18} />
@@ -227,12 +256,18 @@ export default function ProgramsPage() {
               </div>
 
               {/* QR Code Section */}
-              <div className="border-t pt-4 mb-4">
+              <div className={`border-t pt-4 mb-4 ${darkMode ? 'border-purple-700/30' : ''}`}>
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-xs font-medium text-slate-600">Enrollment QR Code</p>
+                  <p className={`text-xs font-medium ${
+                    darkMode ? 'text-slate-400' : 'text-slate-600'
+                  }`}>Enrollment QR Code</p>
                   <button
                     onClick={() => downloadQR(prog.id, prog.name)}
-                    className="p-1 text-indigo-600 hover:bg-indigo-100 rounded transition-colors"
+                    className={`p-1 rounded transition-colors ${
+                      darkMode
+                        ? 'text-purple-400 hover:bg-purple-900/50'
+                        : 'text-indigo-600 hover:bg-indigo-100'
+                    }`}
                     title="Download QR"
                   >
                     <Download size={16} />
@@ -241,7 +276,9 @@ export default function ProgramsPage() {
 
                 {expandedQR === prog.id ? (
                   <div className="flex justify-center mb-3">
-                    <div ref={el => { if (el) qrRefs.current[prog.id] = el }} className="bg-white p-4 rounded-lg">
+                    <div ref={el => { if (el) qrRefs.current[prog.id] = el }} className={`p-4 rounded-lg ${
+                      darkMode ? 'bg-slate-900' : 'bg-white'
+                    }`}>
                       <QRCodeSVG
                         value={getEnrollUrl(prog.id)}
                         size={256}
@@ -253,7 +290,11 @@ export default function ProgramsPage() {
                 ) : (
                   <button
                     onClick={() => setExpandedQR(prog.id)}
-                    className="w-full p-3 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-600 text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                    className={`w-full p-3 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+                      darkMode
+                        ? 'bg-slate-700 hover:bg-slate-600 text-slate-300'
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                    }`}
                   >
                     <QrCode size={16} /> Show QR Code
                   </button>
@@ -262,7 +303,11 @@ export default function ProgramsPage() {
                 {expandedQR === prog.id && (
                   <button
                     onClick={() => setExpandedQR(null)}
-                    className="w-full mt-2 p-2 text-slate-600 text-sm font-medium hover:bg-slate-100 rounded-lg transition-colors"
+                    className={`w-full mt-2 p-2 text-sm font-medium rounded-lg transition-colors ${
+                      darkMode
+                        ? 'text-slate-400 hover:bg-slate-700'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
                   >
                     Hide QR
                   </button>
@@ -270,14 +315,22 @@ export default function ProgramsPage() {
               </div>
 
               {/* Enrollment Link */}
-              <div className="border-t pt-4 mt-auto">
-                <p className="text-xs font-medium text-slate-600 mb-2">Enrollment Link:</p>
-                <div className="flex items-center gap-2 bg-slate-50 p-3 rounded-lg">
+              <div className={`border-t pt-4 mt-auto ${darkMode ? 'border-purple-700/30' : ''}`}>
+                <p className={`text-xs font-medium mb-2 ${
+                  darkMode ? 'text-slate-400' : 'text-slate-600'
+                }`}>Enrollment Link:</p>
+                <div className={`flex items-center gap-2 p-3 rounded-lg ${
+                  darkMode
+                    ? 'bg-slate-700'
+                    : 'bg-slate-50'
+                }`}>
                   <input
                     type="text"
                     readOnly
                     value={getEnrollUrl(prog.id)}
-                    className="flex-1 bg-transparent text-xs text-slate-600 font-mono outline-none truncate"
+                    className={`flex-1 bg-transparent text-xs font-mono outline-none truncate ${
+                      darkMode ? 'text-slate-400' : 'text-slate-600'
+                    }`}
                   />
                   <button
                     onClick={() => {
@@ -285,7 +338,11 @@ export default function ProgramsPage() {
                       setMessage('✓ Link copied!')
                       setTimeout(() => setMessage(''), 2000)
                     }}
-                    className="p-2 bg-indigo-100 text-indigo-600 rounded hover:bg-indigo-200 transition-colors"
+                    className={`p-2 rounded transition-colors ${
+                      darkMode
+                        ? 'bg-purple-600/50 text-purple-200 hover:bg-purple-600'
+                        : 'bg-indigo-100 text-indigo-600 hover:bg-indigo-200'
+                    }`}
                     title="Copy"
                   >
                     <Copy size={16} />
@@ -300,14 +357,28 @@ export default function ProgramsPage() {
       {/* Dialog Modal */}
       {dialogMode && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900">
+          <div className={`rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border-2 ${
+            darkMode
+              ? 'bg-slate-800 border-purple-700/50'
+              : 'bg-white border-slate-200'
+          }`}>
+            <div className={`sticky top-0 border-b p-6 flex items-center justify-between ${
+              darkMode
+                ? 'bg-slate-800 border-purple-700/30'
+                : 'bg-white'
+            }`}>
+              <h2 className={`text-2xl font-bold ${
+                darkMode ? 'text-white' : 'text-slate-900'
+              }`}>
                 {dialogMode === 'add' ? 'Create New Program' : 'Edit Program'}
               </h2>
               <button
                 onClick={() => setDialogMode(null)}
-                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                className={`p-2 rounded-lg transition-colors ${
+                  darkMode
+                    ? 'hover:bg-slate-700'
+                    : 'hover:bg-slate-100'
+                }`}
               >
                 <X size={24} />
               </button>
@@ -316,63 +387,99 @@ export default function ProgramsPage() {
             <div className="p-6 space-y-6">
               {/* Basic Info */}
               <div className="space-y-4">
-                <h3 className="font-semibold text-slate-900 text-lg">Program Information</h3>
+                <h3 className={`font-semibold text-lg ${
+                  darkMode ? 'text-white' : 'text-slate-900'
+                }`}>Program Information</h3>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Program Name *</label>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    darkMode ? 'text-slate-300' : 'text-slate-700'
+                  }`}>Program Name *</label>
                   <input
                     value={dialogForm.name}
                     onChange={e => setDialogForm({ ...dialogForm, name: e.target.value })}
                     placeholder="e.g., Coffee Loyalty"
-                    className="input-field"
+                    className={`input-field ${
+                      darkMode
+                        ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                        : ''
+                    }`}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Description</label>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    darkMode ? 'text-slate-300' : 'text-slate-700'
+                  }`}>Description</label>
                   <textarea
                     value={dialogForm.description}
                     onChange={e => setDialogForm({ ...dialogForm, description: e.target.value })}
                     placeholder="What is this program about?"
                     rows={2}
-                    className="input-field"
+                    className={`input-field ${
+                      darkMode
+                        ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                        : ''
+                    }`}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Points Per Action</label>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    darkMode ? 'text-slate-300' : 'text-slate-700'
+                  }`}>Points Per Action</label>
                   <input
                     type="number"
                     min="1"
                     value={dialogForm.pointsPerAction}
                     onChange={e => setDialogForm({ ...dialogForm, pointsPerAction: parseInt(e.target.value) || 1 })}
-                    className="input-field"
+                    className={`input-field ${
+                      darkMode
+                        ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                        : ''
+                    }`}
                   />
                 </div>
               </div>
 
               {/* Design Section */}
-              <div className="space-y-4 border-t pt-6">
-                <h3 className="font-semibold text-slate-900 text-lg">Design</h3>
+              <div className={`space-y-4 border-t pt-6 ${darkMode ? 'border-purple-700/30' : ''}`}>
+                <h3 className={`font-semibold text-lg ${
+                  darkMode ? 'text-white' : 'text-slate-900'
+                }`}>Design</h3>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Logo URL</label>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    darkMode ? 'text-slate-300' : 'text-slate-700'
+                  }`}>Logo URL</label>
                   <input
                     type="text"
                     placeholder="https://example.com/logo.png"
                     value={dialogTemplate.design?.logoUrl || ''}
                     onChange={e => setDialogTemplate({...dialogTemplate, design: {...dialogTemplate.design, logoUrl: e.target.value}})}
-                    className="input-field"
+                    className={`input-field ${
+                      darkMode
+                        ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                        : ''
+                    }`}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Background URL</label>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    darkMode ? 'text-slate-300' : 'text-slate-700'
+                  }`}>Background URL</label>
                   <input
                     type="text"
                     placeholder="https://example.com/bg.png"
                     value={dialogTemplate.design?.backgroundUrl || ''}
                     onChange={e => setDialogTemplate({...dialogTemplate, design: {...dialogTemplate.design, backgroundUrl: e.target.value}})}
-                    className="input-field"
+                    className={`input-field ${
+                      darkMode
+                        ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                        : ''
+                    }`}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Background Color</label>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    darkMode ? 'text-slate-300' : 'text-slate-700'
+                  }`}>Background Color</label>
                   <div className="flex gap-2">
                     <input
                       type="color"
@@ -385,19 +492,27 @@ export default function ProgramsPage() {
                       value={dialogTemplate.design?.backgroundColor || '#72461d'}
                       onChange={e => setDialogTemplate({...dialogTemplate, design: {...dialogTemplate.design, backgroundColor: e.target.value}})}
                       placeholder="#72461d"
-                      className="input-field flex-1"
+                      className={`input-field flex-1 ${
+                        darkMode
+                          ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                          : ''
+                      }`}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Rewards Section */}
-              <div className="space-y-4 border-t pt-6">
-                <h3 className="font-semibold text-slate-900 text-lg">Rewards</h3>
+              <div className={`space-y-4 border-t pt-6 ${darkMode ? 'border-purple-700/30' : ''}`}>
+                <h3 className={`font-semibold text-lg ${
+                  darkMode ? 'text-white' : 'text-slate-900'
+                }`}>Rewards</h3>
                 {dialogTemplate.rewards?.map((reward, i) => (
                   <div key={i} className="flex gap-2 items-end">
                     <div className="flex-1">
-                      <label className="block text-xs font-medium text-slate-600 mb-1">Reward Name</label>
+                      <label className={`block text-xs font-medium mb-1 ${
+                        darkMode ? 'text-slate-400' : 'text-slate-600'
+                      }`}>Reward Name</label>
                       <input
                         type="text"
                         value={reward.rewardName}
@@ -407,11 +522,17 @@ export default function ProgramsPage() {
                           setDialogTemplate({...dialogTemplate, rewards: newRewards})
                         }}
                         placeholder="e.g., Free Drink"
-                        className="input-field"
+                        className={`input-field ${
+                          darkMode
+                            ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                            : ''
+                        }`}
                       />
                     </div>
                     <div className="w-32">
-                      <label className="block text-xs font-medium text-slate-600 mb-1">Stamps Required</label>
+                      <label className={`block text-xs font-medium mb-1 ${
+                        darkMode ? 'text-slate-400' : 'text-slate-600'
+                      }`}>Stamps Required</label>
                       <input
                         type="number"
                         min="1"
@@ -421,12 +542,20 @@ export default function ProgramsPage() {
                           newRewards[i].stampsRequired = parseInt(e.target.value) || 1
                           setDialogTemplate({...dialogTemplate, rewards: newRewards})
                         }}
-                        className="input-field"
+                        className={`input-field ${
+                          darkMode
+                            ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                            : ''
+                        }`}
                       />
                     </div>
                     <button
                       onClick={() => setDialogTemplate({...dialogTemplate, rewards: dialogTemplate.rewards?.filter((_, j) => j !== i)})}
-                      className="p-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
+                      className={`p-2 rounded ${
+                        darkMode
+                          ? 'bg-red-600/50 text-red-300 hover:bg-red-600'
+                          : 'bg-red-100 text-red-600 hover:bg-red-200'
+                      }`}
                     >
                       <Trash2 size={18} />
                     </button>
@@ -434,39 +563,57 @@ export default function ProgramsPage() {
                 ))}
                 <button
                   onClick={() => setDialogTemplate({...dialogTemplate, rewards: [...(dialogTemplate.rewards || []), {rewardName: '', stampsRequired: 1}]})}
-                  className="w-full p-3 bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-200 flex items-center justify-center gap-2 font-medium"
+                  className={`w-full p-3 rounded-lg flex items-center justify-center gap-2 font-medium transition-colors ${
+                    darkMode
+                      ? 'bg-purple-600/50 text-purple-200 hover:bg-purple-600'
+                      : 'bg-indigo-100 text-indigo-600 hover:bg-indigo-200'
+                  }`}
                 >
                   <Plus size={18} /> Add Reward
                 </button>
               </div>
 
               {/* Terms Section */}
-              <div className="space-y-4 border-t pt-6">
-                <h3 className="font-semibold text-slate-900 text-lg">Terms & Usage</h3>
+              <div className={`space-y-4 border-t pt-6 ${darkMode ? 'border-purple-700/30' : ''}`}>
+                <h3 className={`font-semibold text-lg ${
+                  darkMode ? 'text-white' : 'text-slate-900'
+                }`}>Terms & Usage</h3>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Usage Description</label>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    darkMode ? 'text-slate-300' : 'text-slate-700'
+                  }`}>Usage Description</label>
                   <textarea
                     placeholder="e.g., Earn 1 point per purchase."
                     value={dialogTemplate.usageDescription || ''}
                     onChange={e => setDialogTemplate({...dialogTemplate, usageDescription: e.target.value})}
                     rows={2}
-                    className="input-field"
+                    className={`input-field ${
+                      darkMode
+                        ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                        : ''
+                    }`}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Terms of Use</label>
+                  <label className={`block text-sm font-medium mb-2 ${
+                    darkMode ? 'text-slate-300' : 'text-slate-700'
+                  }`}>Terms of Use</label>
                   <textarea
                     placeholder="e.g., Valid in-store only."
                     value={dialogTemplate.termsOfUseText || ''}
                     onChange={e => setDialogTemplate({...dialogTemplate, termsOfUseText: e.target.value})}
                     rows={2}
-                    className="input-field"
+                    className={`input-field ${
+                      darkMode
+                        ? 'bg-slate-700 text-white border-slate-600 placeholder-slate-400'
+                        : ''
+                    }`}
                   />
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="border-t pt-6 flex gap-3">
+              <div className={`border-t pt-6 flex gap-3 ${darkMode ? 'border-purple-700/30' : ''}`}>
                 {dialogMode === 'edit' && (
                   <button
                     onClick={() => {
@@ -476,14 +623,22 @@ export default function ProgramsPage() {
                       }
                     }}
                     disabled={loading}
-                    className="p-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2 font-medium"
+                    className={`p-3 rounded-lg transition-colors flex items-center justify-center gap-2 font-medium ${
+                      darkMode
+                        ? 'bg-red-600/50 text-red-200 hover:bg-red-600'
+                        : 'bg-red-500 text-white hover:bg-red-600'
+                    }`}
                   >
                     <Trash2 size={18} /> Delete Program
                   </button>
                 )}
                 <button
                   onClick={() => setDialogMode(null)}
-                  className="flex-1 p-3 bg-slate-300 text-slate-900 rounded-lg hover:bg-slate-400 transition-colors font-medium"
+                  className={`flex-1 p-3 rounded-lg font-medium transition-colors ${
+                    darkMode
+                      ? 'bg-slate-600 text-slate-100 hover:bg-slate-500'
+                      : 'bg-slate-300 text-slate-900 hover:bg-slate-400'
+                  }`}
                 >
                   Cancel
                 </button>

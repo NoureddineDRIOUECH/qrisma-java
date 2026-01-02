@@ -520,13 +520,13 @@ export default function RegisterPage() {
                   <div className="relative">
                     <Globe size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" />
                     <input
-                      type="url"
+                      type="text"
                       value={store.website}
                       onChange={e => setStore({ ...store, website: e.target.value })}
                       onFocus={() => setFocusedField('website')}
                       onBlur={() => setFocusedField(null)}
                       disabled={loading}
-                      placeholder="https://yourstore.com"
+                      placeholder="www.yourstore.com"
                       className={`w-full pl-12 pr-4 py-3 border-2 rounded-xl focus:outline-none transition-all duration-200 bg-white disabled:bg-slate-100 disabled:cursor-not-allowed ${
                         focusedField === 'website'
                         ? 'border-indigo-500 focus:ring-2 focus:ring-indigo-200'
@@ -550,7 +550,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading || (step === 1 && (!!emailError || !!passwordError || !!confirmPasswordError || !!firstNameError)) || (step === 2 && !!storeNameError)}
-              className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-3.5 rounded-xl font-semibold hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="w-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-600 text-white py-3.5 rounded-xl font-semibold hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {loading ? (
                 <>
