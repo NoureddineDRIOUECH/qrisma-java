@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Users, Settings, UserCircle, BarChart2, LogOut, Menu, Ticket, Moon, Sun, ChevronDown, MonitorSmartphone, Contact2} from 'lucide-react'
 import { useDarkMode } from '../context/DarkModeContext'
+import { API_BASE } from '../utils/api'
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -19,7 +20,7 @@ export default function Layout() {
     
     if (userId && token) {
       // Fetch user profile from backend
-      fetch('http://localhost:8080/api/profile', {
+      fetch(`${API_BASE}/api/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
