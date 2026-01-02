@@ -88,11 +88,14 @@ export default function StoreSettingsPage() {
         </div>
       )}
 
-      <form onSubmit={saveSettings} className={`card space-y-6 border ${
+      <form onSubmit={saveSettings} className={`card relative overflow-hidden space-y-6 border ${
         darkMode
           ? 'border-purple-700/50 bg-slate-900/30'
-          : 'bg-white'
+          : 'border-sky-100 bg-gradient-to-br from-white via-sky-50 to-indigo-50 shadow-[0_20px_70px_-40px_rgba(14,165,233,0.45)]'
       }`}>
+        <div className={`absolute inset-0 pointer-events-none opacity-70 ${darkMode ? 'hidden' : ''}`} style={{
+          background: 'radial-gradient(circle at 15% 20%, rgba(59,130,246,0.12), transparent 32%), radial-gradient(circle at 85% 10%, rgba(14,165,233,0.12), transparent 30%), radial-gradient(circle at 45% 90%, rgba(99,102,241,0.10), transparent 38%)'
+        }}></div>
         {/* Store Name */}
         <div>
           <label className={`block text-sm font-semibold mb-3 ${

@@ -168,10 +168,13 @@ export default function ProfilePage() {
         <p className={darkMode ? 'text-slate-300' : 'text-slate-600'}>Manage your owner profile and preferences</p>
       </div>
 
-      <form onSubmit={save} className="max-w-2xl space-y-6">
-        <div className={`card ${
-          darkMode ? 'border-purple-700/50 bg-slate-900/30' : ''
+      <form onSubmit={save} className="max-w-2xl mx-auto space-y-6">
+        <div className={`card relative overflow-hidden ${
+          darkMode ? 'border-purple-700/50 bg-slate-900/30' : 'border border-sky-100 bg-gradient-to-br from-white via-sky-50 to-indigo-50 shadow-[0_20px_70px_-40px_rgba(14,165,233,0.45)]'
         }`}>
+          <div className={`absolute inset-0 pointer-events-none opacity-70 ${darkMode ? 'hidden' : ''}`} style={{
+            background: 'radial-gradient(circle at 20% 20%, rgba(59,130,246,0.12), transparent 32%), radial-gradient(circle at 80% 0%, rgba(14,165,233,0.12), transparent 28%), radial-gradient(circle at 50% 90%, rgba(79,70,229,0.10), transparent 38%)'
+          }}></div>
           <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${
             darkMode ? 'text-white' : 'text-slate-900'
           }`}>
@@ -263,9 +266,12 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        <div className={`card ${
-          darkMode ? 'border-purple-700/50 bg-slate-900/30' : ''
+        <div className={`card relative overflow-hidden ${
+          darkMode ? 'border-purple-700/50 bg-slate-900/30' : 'border border-sky-100 bg-gradient-to-br from-white via-sky-50 to-indigo-50 shadow-[0_20px_70px_-40px_rgba(14,165,233,0.45)]'
         }`}>
+          <div className={`absolute inset-0 pointer-events-none opacity-70 ${darkMode ? 'hidden' : ''}`} style={{
+            background: 'radial-gradient(circle at 20% 20%, rgba(59,130,246,0.12), transparent 32%), radial-gradient(circle at 80% 0%, rgba(14,165,233,0.12), transparent 28%), radial-gradient(circle at 50% 90%, rgba(79,70,229,0.10), transparent 38%)'
+          }}></div>
           <h2 className={`text-lg font-semibold mb-4 flex items-center gap-2 ${
             darkMode ? 'text-white' : 'text-slate-900'
           }`}>
