@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, Settings, UserCircle, BarChart2, LogOut, Menu, Ticket, Moon, Sun, ChevronDown } from 'lucide-react'
+import { LayoutDashboard, Users, Settings, UserCircle, BarChart2, LogOut, Menu, Ticket, Moon, Sun, ChevronDown, MonitorSmartphone, Contact2} from 'lucide-react'
 import { useDarkMode } from '../context/DarkModeContext'
 
 export default function Layout() {
@@ -67,7 +67,7 @@ export default function Layout() {
     <div className={`min-h-screen transition-colors duration-300 ${
       darkMode 
         ? 'bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950' 
-        : 'bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50'
+        : 'bg-gradient-to-br from-indigo-50 via-sky-50 to-white'
     }`}>
       <div className="flex">
         <aside className={`${sidebarOpen ? 'w-64' : 'w-20'} min-h-screen transition-all duration-300 shadow-2xl sticky top-0 ${
@@ -84,11 +84,12 @@ export default function Layout() {
           <nav className="space-y-2 px-3 mt-6">
             <NavItem to="/owner/dashboard" label="Dashboard" icon={LayoutDashboard} />
             <NavItem to="/owner/programs" label="Programs" icon={Ticket} />
+            <NavItem to="/owner/customers" label="Customers" icon={Contact2} />
             <NavItem to="/owner/employees" label="Employees" icon={Users} />
             <NavItem to="/owner/store" label="Store" icon={Settings} />
             <NavItem to="/owner/profile" label="Profile" icon={UserCircle} />
             <div className="border-t border-white/10 pt-2 mt-4" />
-            <NavItem to="/employee" label="POS" icon={BarChart2} />
+            <NavItem to="/employee" label="POS" icon={MonitorSmartphone} />
           </nav>
         </aside>
 
@@ -96,14 +97,14 @@ export default function Layout() {
           <header className={`h-16 backdrop-blur-md border-b transition-all duration-300 flex items-center justify-between px-6 sticky top-0 z-40 ${
             darkMode
               ? 'bg-slate-900/50 border-purple-800/30'
-              : 'bg-gradient-to-r from-indigo-600 to-indigo-700 border-indigo-800'
+              : 'bg-gradient-to-r from-indigo-500 via-sky-400 to-cyan-300 border-sky-200 shadow-[0_10px_40px_-18px_rgba(14,165,233,0.7)]'
           }`}>
             <div className={`font-semibold text-lg transition-colors duration-300 ${
-              darkMode ? 'text-white' : 'text-white'
+              darkMode ? 'text-white' : 'text-slate-900'
             }`}>Owner Console</div>
             <div className="flex items-center gap-4">
               <span className={`text-sm transition-colors duration-300 ${
-                darkMode ? 'text-slate-400' : 'text-indigo-100'
+                darkMode ? 'text-slate-400' : 'text-slate-800'
               }`}>{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
               
               {/* Dark Mode Toggle */}
@@ -112,7 +113,7 @@ export default function Layout() {
                 className={`p-2 rounded-lg transition-all ripple ${
                   darkMode
                     ? 'bg-gradient-to-br from-purple-700 to-purple-800 hover:from-purple-600 hover:to-purple-700 text-yellow-300 shadow-lg'
-                    : 'bg-gradient-to-br from-indigo-800 to-indigo-900 hover:from-indigo-700 hover:to-indigo-800 text-yellow-300 shadow-lg'
+                    : 'bg-gradient-to-br from-white via-sky-100 to-indigo-100 hover:from-sky-100 hover:to-white text-sky-700 shadow-md'
                 }`}
                 title="Toggle dark mode"
               >
@@ -126,7 +127,7 @@ export default function Layout() {
                   className={`p-2 rounded-lg transition-all ripple flex items-center gap-2 ${
                     darkMode
                       ? 'bg-gradient-to-br from-purple-700 to-purple-800 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg'
-                      : 'bg-gradient-to-br from-indigo-800 to-indigo-900 hover:from-indigo-700 hover:to-indigo-800 text-white shadow-lg'
+                      : 'bg-gradient-to-br from-white via-sky-100 to-indigo-100 hover:from-sky-100 hover:to-white text-slate-800 shadow-md'
                   }`}
                 >
                   <UserCircle size={18} />

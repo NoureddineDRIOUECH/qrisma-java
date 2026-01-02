@@ -18,6 +18,15 @@ export default function ProgramsPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [expandedQR, setExpandedQR] = useState<string | null>(null)
+
+  // Debug current session
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+    const role = localStorage.getItem('role')
+    const tokenPreview = token ? `${token.slice(0, 10)}...` : null
+    console.log('[ProgramsPage] Session:', { userId, role, token: tokenPreview })
+  }, [])
   const [expandedTemplate, setExpandedTemplate] = useState<string | null>(null)
   const [templateForm, setTemplateForm] = useState<Template>({})
   const [dialogMode, setDialogMode] = useState<DialogMode>(null)

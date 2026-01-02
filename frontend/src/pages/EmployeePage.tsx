@@ -1,15 +1,29 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Scan, User, Gift, Plus, Minus, Search, CheckCircle, XCircle, Award, Zap, TrendingUp } from 'lucide-react'
 
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 
 export default function EmployeePage() {
+  const navigate = useNavigate()
+  const [isOwner, setIsOwner] = useState(false)
   const [passObjectId, setPassObjectId] = useState('')
   const [result, setResult] = useState<any>(null)
   const [points, setPoints] = useState(1)
   const [redeemPoints, setRedeemPoints] = useState(1)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+
+  // Debug current session
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+    const role = localStorage.getItem('role')
+    const tokenPreview = token ? `${token.slice(0, 10)}...` : null
+    console.log('[EmployeePage] Session:', { userId, role, token: tokenPreview })
+    const roleCheck = (role || '').toLowerCase()
+    setIsOwner(roleCheck === 'owner')
+  }, [])
 
   async function lookup() {
     setLoading(true)
@@ -99,6 +113,16 @@ export default function EmployeePage() {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
+        {isOwner && (
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={() => navigate('/owner/dashboard')}
+              className="px-4 py-2 rounded-xl font-semibold text-indigo-900 bg-gradient-to-r from-indigo-100 via-purple-100 to-blue-100 hover:from-indigo-200 hover:via-purple-200 hover:to-blue-200 border border-indigo-200 shadow-md transition-all"
+            >
+              Return to Owner Dashboard
+            </button>
+          </div>
+        )}
         {/* Header */}
         <div className="text-center mb-10 space-y-4">
           <div className="flex items-center justify-center gap-3">

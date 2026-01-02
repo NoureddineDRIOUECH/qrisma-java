@@ -26,6 +26,15 @@ export default function StoreSettingsPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
 
+  // Debug current session
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+    const role = localStorage.getItem('role')
+    const tokenPreview = token ? `${token.slice(0, 10)}...` : null
+    console.log('[StoreSettingsPage] Session:', { userId, role, token: tokenPreview })
+  }, [])
+
   useEffect(() => {
     fetchSettings()
   }, [])
@@ -65,8 +74,8 @@ export default function StoreSettingsPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
-      <div className="mb-6">
+    <div className="space-y-6 max-w-3xl mx-auto">
+      <div className="mb-7 text-center">
         <h1 className={`text-3xl font-bold mb-2 ${
           darkMode ? 'text-white' : 'text-slate-900'
         }`}>Store Settings</h1>

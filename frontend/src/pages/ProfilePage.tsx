@@ -126,6 +126,15 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
 
+  // Debug current session
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+    const role = localStorage.getItem('role')
+    const tokenPreview = token ? `${token.slice(0, 10)}...` : null
+    console.log('[ProfilePage] Session:', { userId, role, token: tokenPreview })
+  }, [])
+
   useEffect(()=>{ 
     fetch(`${API_BASE}/api/profile`).then(r=>r.json()).then(setForm) 
   }, [])
@@ -151,8 +160,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="mb-6">
+    <div className="space-y-7 max-w-3xl mx-auto">
+      <div className="mb-7 text-center">
         <h1 className={`text-3xl font-bold mb-2 ${
           darkMode ? 'text-white' : 'text-slate-900'
         }`}>Account Settings</h1>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/scan")
@@ -25,6 +26,11 @@ public class ScanController {
     private TransactionRepository txRepo;
     @Autowired
     private GoogleWalletService googleWalletService;
+
+    @GetMapping("/customers")
+    public ResponseEntity<List<Customer>> listCustomers() {
+        return ResponseEntity.ok(customerRepo.findAll());
+    }
 
     @PostMapping("/lookup")
     public ResponseEntity<?> lookup(@RequestBody Map<String, String> body) {

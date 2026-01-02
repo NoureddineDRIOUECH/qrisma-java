@@ -19,10 +19,26 @@ export default function EmployeesPage() {
   }
   useEffect(()=>{ load() }, [])
 
+  // Debug current session values in console
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+    const role = localStorage.getItem('role')
+    // Avoid logging full token; trimmed for safety
+    const tokenPreview = token ? `${token.slice(0, 10)}...` : null
+    console.log('Session debug:', { userId, role, token: tokenPreview })
+  }, [])
+
   async function create(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    const res = await fetch(`${API_BASE}/api/employees`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(form) })
+    const payload: any = { ...form }
+    // Only include password when provided so backend can set default securely
+    if (!payload.password) {
+      delete payload.password
+    }
+
+    const res = await fetch(`${API_BASE}/api/employees`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) })
     if (res.ok) { 
       setForm({ email:'', firstName:'', lastName:'', phone:'', password:'' })
       load() 
@@ -133,11 +149,12 @@ export default function EmployeesPage() {
               key={emp.id} 
               className={`card hover:shadow-xl transition-all animate-slide-up border ${
                 darkMode
-                  ? 'border-purple-700/50 bg-gradient-to-br from-slate-800 via-purple-900/30 to-slate-800'
+                  ? 'border-purple-700/50 bg-slate-900/30'
                   : 'border-slate-200 bg-white'
               }`}
               style={{ animationDelay: `${idx * 50}ms` }}
             >
+
               <div className="flex items-center justify-between gap-4">
                 <div className="flex-1">
                   {editing?.id === emp.id ? (

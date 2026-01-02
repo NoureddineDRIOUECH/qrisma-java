@@ -9,6 +9,7 @@ import Layout from './src/components/Layout'
 import DashboardPage from './src/pages/DashboardPage'
 import EmployeesPage from './src/pages/EmployeesPage'
 import ProgramsPage from './src/pages/ProgramsPage'
+import CustomersPage from './src/pages/CustomersPage'
 import StoreSettingsPage from './src/pages/StoreSettingsPage'
 import ProfilePage from './src/pages/ProfilePage'
 import LoginPage from './src/pages/LoginPage'
@@ -34,6 +35,7 @@ function App() {
             <Route index element={<DashboardPage/>} />
             <Route path="dashboard" element={<DashboardPage/>} />
             <Route path="programs" element={<ProgramsPage/>} />
+            <Route path="customers" element={<CustomersPage/>} />
             <Route path="employees" element={<EmployeesPage/>} />
             <Route path="store" element={<StoreSettingsPage/>} />
             <Route path="profile" element={<ProfilePage/>} />

@@ -7,6 +7,15 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<any>(null)
   const { darkMode } = useDarkMode()
 
+  // Debug current session
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+    const role = localStorage.getItem('role')
+    const tokenPreview = token ? `${token.slice(0, 10)}...` : null
+    console.log('[DashboardPage] Session:', { userId, role, token: tokenPreview })
+  }, [])
+
   useEffect(() => {
     apiGet('/api/dashboard/stats').then(r=>r.json()).then(setStats)
   }, [])
@@ -40,7 +49,11 @@ export default function DashboardPage() {
   )
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-8 p-5 rounded-3xl transition-colors duration-300 ${
+      darkMode
+        ? ''
+        : 'bg-gradient-to-br from-white via-sky-50 to-indigo-50 border border-sky-100 shadow-[0_24px_80px_-38px_rgba(14,165,233,0.45)]'
+    }`}>
       <div className="mb-8">
         <h1 className={`text-4xl font-bold mb-2 transition-colors duration-300 ${
           darkMode ? 'text-white' : 'text-slate-900'
@@ -90,14 +103,14 @@ export default function DashboardPage() {
         </div>
       ) : (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-pulse text-white text-lg">Loading analytics...</div>
+          <div className={`animate-pulse text-lg ${darkMode ? 'text-white' : 'text-slate-600'}`}>Loading analytics...</div>
         </div>
       )}
 
       <div className={`mt-8 rounded-2xl shadow-lg border-2 p-6 transition-all duration-300 ${
         darkMode
           ? 'border-purple-700/50 bg-gradient-to-br from-slate-800 via-purple-900/30 to-slate-800'
-          : 'border-slate-200 bg-white'
+          : 'border-sky-200 bg-gradient-to-br from-white via-sky-50 to-indigo-50 shadow-[0_16px_60px_-30px_rgba(14,165,233,0.4)]'
       }`}>
         <div className="mb-6">
           <h2 className={`text-3xl font-bold mb-2 transition-colors duration-300 ${

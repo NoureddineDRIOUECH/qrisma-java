@@ -17,6 +17,15 @@ export default function LoginPage() {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
+  // Debug current session
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+    const role = localStorage.getItem('role')
+    const tokenPreview = token ? `${token.slice(0, 10)}...` : null
+    console.log('[LoginPage] Session:', { userId, role, token: tokenPreview })
+  }, [])
+
   // Email validation
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -75,11 +84,18 @@ export default function LoginPage() {
       const data = await res.json()
       if (res.ok) {
         // Save token and user info
+        const role = (data.role || '').toLowerCase()
         localStorage.setItem('token', data.token || 'auth-token')
         localStorage.setItem('userId', data.userId)
-        localStorage.setItem('role', data.role)
+        localStorage.setItem('role', data.role || '')
         setSuccess('Login successful! Redirecting...')
-        setTimeout(() => navigate('/owner/dashboard'), 1500)
+        setTimeout(() => {
+          if (role === 'employee') {
+            navigate('/employee')
+          } else {
+            navigate('/owner/dashboard')
+          }
+        }, 1500)
       } else {
         // Better error messages
         if (data.error === 'User not found') {
