@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableMethodSecurity
@@ -28,6 +29,7 @@ public class SecurityConfig {
                 .cors().and()
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**", "/api/programs/**", "/api/scan/**", "/api/employees/**",
                                 "/api/profile/**", "/api/dashboard/**", "/api/store/**", "/api/users/**", "/enroll/**",
                                 "/api/activity/**", "/actuator/**")
