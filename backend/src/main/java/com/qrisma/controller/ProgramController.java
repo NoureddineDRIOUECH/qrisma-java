@@ -50,6 +50,23 @@ public class ProgramController {
         return ResponseEntity.ok(Map.of("success", true));
     }
 
+    @PutMapping("/{programId}")
+    public ResponseEntity<?> updateProgram(@PathVariable UUID programId, @RequestBody LoyaltyProgram updatedProgram) {
+        Optional<LoyaltyProgram> maybe = programRepo.findById(programId);
+        if (maybe.isEmpty())
+            return ResponseEntity.badRequest().body(Map.of("error", "program not found"));
+
+        LoyaltyProgram existingProgram = maybe.get();
+        existingProgram.setName(updatedProgram.getName());
+        existingProgram.setDescription(updatedProgram.getDescription());
+        existingProgram.setTemplateJson(updatedProgram.getTemplateJson());
+        existingProgram.setPointsPerAction(updatedProgram.getPointsPerAction());
+        existingProgram.setActive(updatedProgram.getActive());
+
+        LoyaltyProgram saved = programRepo.save(existingProgram);
+        return ResponseEntity.ok(saved);
+    }
+
     @PostMapping("/{programId}/enroll")
     public ResponseEntity<?> enroll(@PathVariable UUID programId, @RequestBody Map<String, String> body) {
         Optional<LoyaltyProgram> maybe = programRepo.findById(programId);

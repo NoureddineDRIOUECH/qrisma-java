@@ -67,12 +67,32 @@ export default function ProgramsPage() {
     setMessage('')
     try {
       const payload = { ...dialogForm, templateJson: JSON.stringify(dialogTemplate) }
-      const res = await apiPost('/api/programs', payload)
+      
+      let res
+      if (dialogMode === 'add') {
+        // POST request for creating new program
+        res = await apiPost('/api/programs', payload)
+      } else if (dialogMode === 'edit' && dialogEditingId) {
+        // PUT request for updating existing program
+        res = await fetch(`${API_BASE}/api/programs/${dialogEditingId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-User-Id': localStorage.getItem('userId') || ''
+          },
+          body: JSON.stringify(payload)
+        })
+      } else {
+        throw new Error('Invalid operation')
+      }
+      
       if (res.ok) {
         setMessage(dialogMode === 'add' ? '✓ Program created!' : '✓ Program updated!')
         setTimeout(() => setMessage(''), 3000)
         setDialogMode(null)
         apiGet('/api/programs').then(r => r.json()).then(setPrograms)
+      } else {
+        throw new Error('Save failed')
       }
     } catch (e) {
       setMessage('✗ Error saving program')

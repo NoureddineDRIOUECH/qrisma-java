@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/api/programs/**", "/api/scan/**", "/api/employees/**",
                                 "/api/profile/**", "/api/dashboard/**", "/api/store/**", "/api/users/**", "/enroll/**",
-                                "/actuator/**")
+                                "/api/activity/**", "/actuator/**")
                         .permitAll()
                         .anyRequest().authenticated());
         // Note: For MVP we use simple JWT filter later; left out the filter wiring for

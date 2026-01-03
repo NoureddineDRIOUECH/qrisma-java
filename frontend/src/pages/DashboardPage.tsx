@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import { Users, Store, TrendingUp, Wallet, Gift } from 'lucide-react'
+import { Users, Store, TrendingUp, Wallet, Gift, Clock, ArrowRight } from 'lucide-react'
 import { apiGet } from '../utils/api'
 import { useDarkMode } from '../context/DarkModeContext'
 
+interface TransactionRecord {
+  id: string
+  customerId: string
+  employeeId?: string
+  type: string
+  points: number
+  note: string
+  createdAt: string
+}
+
 export default function DashboardPage() {
   const [stats, setStats] = useState<any>(null)
+  const [recentActivity, setRecentActivity] = useState<TransactionRecord[]>([])
+  const [activityLoading, setActivityLoading] = useState(true)
   const { darkMode } = useDarkMode()
 
-  // Debug current session
   useEffect(() => {
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
@@ -18,6 +29,20 @@ export default function DashboardPage() {
 
   useEffect(() => {
     apiGet('/api/dashboard/stats').then(r=>r.json()).then(setStats)
+  }, [])
+
+  useEffect(() => {
+    setActivityLoading(true)
+    apiGet('/api/activity/recent')
+      .then(r => r.json())
+      .then(data => {
+        setRecentActivity(Array.isArray(data) ? data : [])
+        setActivityLoading(false)
+      })
+      .catch(error => {
+        console.error('Failed to fetch recent activity:', error)
+        setActivityLoading(false)
+      })
   }, [])
 
   const StatCard = ({ title, value, icon: Icon, color, delay }: any) => (
@@ -44,6 +69,84 @@ export default function DashboardPage() {
           }`}>{value}</p>
           <div className="h-1 w-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
         </div>
+      </div>
+    </div>
+  )
+
+  const formatDate = (dateString: string): string => {
+    try {
+      const date = new Date(dateString)
+      const now = new Date()
+      const diffMs = now.getTime() - date.getTime()
+      const diffMins = Math.floor(diffMs / 60000)
+      const diffHours = Math.floor(diffMs / 3600000)
+      const diffDays = Math.floor(diffMs / 86400000)
+
+      if (diffMins < 1) return 'Just now'
+      if (diffMins < 60) return `${diffMins}m ago`
+      if (diffHours < 24) return `${diffHours}h ago`
+      if (diffDays < 7) return `${diffDays}d ago`
+      
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+      })
+    } catch {
+      return dateString
+    }
+  }
+
+  const getTransactionColor = (type: string) => {
+    switch (type.toUpperCase()) {
+      case 'ADD_POINTS':
+        return 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-950'
+      case 'REDEEM':
+        return 'text-orange-600 bg-orange-50 dark:text-orange-400 dark:bg-orange-950'
+      case 'TRANSFER':
+        return 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-950'
+      default:
+        return 'text-slate-600 bg-slate-50 dark:text-slate-400 dark:bg-slate-900'
+    }
+  }
+
+  const TransactionRow = ({ transaction }: { transaction: TransactionRecord }) => (
+    <div className={`flex items-center justify-between p-4 rounded-xl transition-all duration-300 hover:scale-105 ${
+      darkMode
+        ? 'bg-slate-700/50 hover:bg-slate-700/70'
+        : 'bg-slate-50 hover:bg-slate-100'
+    }`}>
+      <div className="flex items-center gap-4 flex-1">
+        <div className={`p-2 rounded-lg ${getTransactionColor(transaction.type)}`}>
+          <ArrowRight size={20} />
+        </div>
+        <div className="flex-1">
+          <p className={`font-semibold transition-colors duration-300 ${
+            darkMode ? 'text-white' : 'text-slate-900'
+          }`}>
+            {transaction.type.replace(/_/g, ' ')}
+          </p>
+          <p className={`text-sm transition-colors duration-300 ${
+            darkMode ? 'text-slate-400' : 'text-slate-600'
+          }`}>
+            {transaction.note || 'Transaction'}
+          </p>
+        </div>
+      </div>
+      <div className="text-right">
+        <p className={`font-bold text-lg transition-colors duration-300 ${
+          transaction.type.toUpperCase() === 'ADD_POINTS'
+            ? darkMode ? 'text-emerald-400' : 'text-emerald-600'
+            : darkMode ? 'text-orange-400' : 'text-orange-600'
+        }`}>
+          {transaction.type.toUpperCase() === 'ADD_POINTS' ? '+' : '-'}{transaction.points}
+        </p>
+        <p className={`text-xs flex items-center justify-end gap-1 transition-colors duration-300 ${
+          darkMode ? 'text-slate-400' : 'text-slate-500'
+        }`}>
+          <Clock size={12} />
+          {formatDate(transaction.createdAt)}
+        </p>
       </div>
     </div>
   )
@@ -120,15 +223,33 @@ export default function DashboardPage() {
             darkMode ? 'text-slate-300' : 'text-slate-600'
           }`}>View your latest transaction history</p>
         </div>
-        <div className={`text-center py-12 rounded-xl border-2 transition-colors duration-300 ${
-          darkMode
-            ? 'border-purple-700/50 bg-slate-900/30'
-            : 'border-slate-100 bg-slate-50'
-        }`}>
-          <p className={`transition-colors duration-300 ${
-            darkMode ? 'text-slate-400' : 'text-slate-500'
-          }`}>No recent transactions yet</p>
-        </div>
+        {activityLoading ? (
+          <div className={`text-center py-12 rounded-xl border-2 transition-colors duration-300 ${
+            darkMode
+              ? 'border-purple-700/50 bg-slate-900/30'
+              : 'border-slate-100 bg-slate-50'
+          }`}>
+            <p className={`transition-colors duration-300 ${
+              darkMode ? 'text-slate-400' : 'text-slate-500'
+            }`}>Loading transactions...</p>
+          </div>
+        ) : recentActivity.length > 0 ? (
+          <div className="space-y-3">
+            {recentActivity.map((transaction) => (
+              <TransactionRow key={transaction.id} transaction={transaction} />
+            ))}
+          </div>
+        ) : (
+          <div className={`text-center py-12 rounded-xl border-2 transition-colors duration-300 ${
+            darkMode
+              ? 'border-purple-700/50 bg-slate-900/30'
+              : 'border-slate-100 bg-slate-50'
+          }`}>
+            <p className={`transition-colors duration-300 ${
+              darkMode ? 'text-slate-400' : 'text-slate-500'
+            }`}>No recent transactions yet</p>
+          </div>
+        )}
       </div>
     </div>
   )
