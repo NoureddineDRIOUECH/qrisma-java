@@ -39,8 +39,17 @@ public class ScanController {
         if (maybe.isEmpty())
             return ResponseEntity.status(404).body(Map.of("error", "not found"));
         Customer c = maybe.get();
-        return ResponseEntity.ok(
-                Map.of("customerId", c.getId().toString(), "firstName", c.getFirstName(), "balance", c.getBalance()));
+
+        // Build response with all available customer fields
+        java.util.Map<String, Object> response = new java.util.HashMap<>();
+        response.put("customerId", c.getId().toString());
+        response.put("firstName", c.getFirstName() != null ? c.getFirstName() : "");
+        response.put("lastName", c.getLastName() != null ? c.getLastName() : "");
+        response.put("email", c.getEmail() != null ? c.getEmail() : "");
+        response.put("phone", c.getPhone() != null ? c.getPhone() : "");
+        response.put("balance", c.getBalance());
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{customerId}/transactions")
