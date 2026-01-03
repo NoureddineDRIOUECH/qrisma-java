@@ -4,7 +4,6 @@
 -- Users
 INSERT INTO users (id, email, password_hash, role, first_name, last_name, phone)
 VALUES
-    ('11111111-1111-1111-1111-111111111111', 'owner@qrisma.dev', '$2a$10$7EqJtq98hPqEX7fNZaFWoO5qaG8GN28AL/fOHnqd7qV671CyMf2nW', 'OWNER', 'Olivia', 'Owner', '+1-555-0100'),
     ('22222222-2222-2222-2222-222222222222', 'emma@qrisma.dev',  '$2a$10$7EqJtq98hPqEX7fNZaFWoO5qaG8GN28AL/fOHnqd7qV671CyMf2nW', 'EMPLOYEE', 'Emma', 'Employee', '+1-555-0101'),
     ('33333333-3333-3333-3333-333333333333', 'liam@qrisma.dev',  '$2a$10$7EqJtq98hPqEX7fNZaFWoO5qaG8GN28AL/fOHnqd7qV671CyMf2nW', 'EMPLOYEE', 'Liam', 'Employee', '+1-555-0102')
 ON CONFLICT (id) DO NOTHING;
